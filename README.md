@@ -14,3 +14,4 @@ This is all what you need to create your own test lab for ansible home lab
 
 # Files / Folders naming information
 - `ansible-prep.md` - Instruction how to install and prepare your hosts as well as node for ansible 
+- `workspace/*` - Workspace folder for ansible playbooks with inventory files and all what's needed to control the worker node
