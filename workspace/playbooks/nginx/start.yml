@@ -1,0 +1,33 @@
+  1 ---
+  2 - name: Start nginx only if it's installed and stopped if not then install it
+  3   hosts: workers
+  4   become: yes
+  5
+  6   tasks:
+  7     - name: Check if nginx is installed
+  8       shell: dpkg -l | grep nginx
+  9       register: nginx_installed
+ 10       ignore_errors: yes
+ 11
+ 12     - name: Install nginx if not installed
+ 13       apt:
+ 14         name: nginx
+ 15         state: present
+ 16         update_cache: yes
+ 17       when: nginx_installed.rc != 0
+ 18
+ 19     - name: Check if nginx is running
+ 20       shell: systemctl is-active nginx
+ 21       register: nginx_status
+ 22       ignore_errors: yes
+ 23       when: nginx_installed.rc == 0 or nginx_installed.rc is undefined
+ 24
+ 25     - name: Start nginx if it's installed and not running
+ 26       service:
+ 27         name: nginx
+ 28         state: started
+ 29       when:
+ 30         - nginx_installed.rc == 0 or nginx_installed.rc is undefined
+ 31         - nginx_status.stdout != "active"
+ 32
+~               
