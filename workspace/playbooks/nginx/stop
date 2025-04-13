@@ -1,0 +1,24 @@
+---
+- name: Stop nginx only if it's installed and started
+  hosts: workers
+  become: yes
+
+  tasks:
+    - name: Check if nginx is installed
+      shell: dpkg -l | grep nginx
+      register: nginx_installed
+      ignore_errors: yes
+
+    - name: Check if nginx is running
+      shell: systemctl is-active nginx
+      register: nginx_status
+      ignore_errors: yes
+      when: nginx_installed.rc == 0 or nginx_installed.rc is undefined
+
+    - name: Stop nginx if it's installed and not running
+      service:
+        name: nginx
+        state: stopped
+      when:
+        - nginx_installed.rc == 0 or nginx_installed.rc is undefined
+        - nginx_status.stdout == "active"
