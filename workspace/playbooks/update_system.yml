@@ -1,0 +1,15 @@
+---
+
+- name: Update all packages with apt-get
+  hosts: workers
+  become: yes
+
+
+  tasks:
+          - name: Update apt cache
+            apt:
+                    update_cache: yes
+
+          - name: Upgrade all packages
+            apt:
+                    upgrade: dist
