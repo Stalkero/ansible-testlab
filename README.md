@@ -10,4 +10,7 @@ This is all what you need to create your own test lab for ansible home lab
 
 ## IP addresssing scheme
 - `192.168.1.110` - Ansible host server
-- `192.168.1.111` - Worker node 
+- `192.168.1.111` - Worker node
+
+# File naming information
+- `ansible-prep.md` - Instruction how to install and prepare your hosts as well as node for ansible 
